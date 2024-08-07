@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depósito USDT TRC20</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 100%;
+            width: 100%;
+            min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+            background-color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .header {
+            background-color: #28a745; /* Color verde */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+        }
+        .message span {
+            font-weight: bold;
+        }
+        .info {
+            background-color: #e7f5e0;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #d0e9c6;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .info p {
+            margin: 0 0 10px;
+        }
+        .info #depositAddress {
+            color: #007bff;
+            word-break: break-all; /* Permite que la dirección se rompa si es demasiado larga */
+            margin-bottom: 10px;
+        }
+        .info .copy-button-container {
+            text-align: right;
+            margin-top: 20px; /* Separar del contenido superior */
+        }
+        .info .copy-button {
+            background-color: #007bff; /* Botón azul */
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .info .copy-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Depósito USDT TRC20
+        </div>
+        <form id="depositForm">
+            <label for="depositAmount">Selecciona Monto de Depósito:</label>
+            <select id="depositAmount" name="depositAmount" onchange="calculateEarnings()">
+                <option value="">Seleccione</option>
+                <option value="15">15 USDT</option>
+                <option value="30">30 USDT</option>
+                <option value="100">100 USDT</option>
+            </select>
+
+            <button type="button" onclick="calculateEarnings()">Calcular Ganancias</button>
+        </form>
+        <div id="message" class="message"></div>
+
+        <div class="info">
+            <p><strong>Para el depósito en USDT TRC20:</strong></p>
+            <p id="depositAddress">TKcD6S94nubfBcSLn6vMYQwMV2wkyS2fB4</p>
+            <p>Pago 100% Seguro al igual que los retiros.</p>
+            <div class="copy-button-container">
+                <button class="copy-button" onclick="copyToClipboard()">Copiar dirección USDT TRC20</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEarnings() {
+            const depositAmount = parseFloat(document.getElementById('depositAmount').value);
+            const messageElement = document.getElementById('message');
+
+            if (isNaN(depositAmount) || depositAmount <= 0) {
+                messageElement.textContent = 'Por favor, seleccione un monto válido.';
+                return;
+            }
+
+            let dailyEarnings = 0;
+            let totalEarnings = 0;
+
+            switch (depositAmount) {
+                case 15:
+                    dailyEarnings = 2;
+                    totalEarnings = dailyEarnings * 30;
+                    break;
+                case 30:
+                    dailyEarnings = 5;
+                    totalEarnings = dailyEarnings * 30;
+                    break;
+                case 100:
+                    dailyEarnings = 15;
+                    totalEarnings = dailyEarnings * 30;
+                    break;
+                default:
+                    messageElement.textContent = 'Monto no válido.';
+                    return;
+            }
+
+            messageElement.innerHTML = `
+                <p>Para un depósito de <span>${depositAmount} USDT</span>:</p>
+                <p>Ingresos diarios: <span>${dailyEarnings} USDT</span></p>
+                <p>Ingresos totales en 30 días: <span>${totalEarnings} USDT</span></p>
+            `;
+        }
+
+        function copyToClipboard() {
+            const depositAddress = document.getElementById('depositAddress').textContent;
+            navigator.clipboard.writeText(depositAddress).then(() => {
+                alert('Dirección copiada al portapapeles.');
+            }).catch(err => {
+                alert('Error al copiar la dirección: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
